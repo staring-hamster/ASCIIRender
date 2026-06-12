@@ -67,10 +67,28 @@ void drawLine(Vector2D startPoint, Vector2D endPoint){
 	}
 }
 
+void drawVertexArray(Vector2D vertexArray[], int size){
+	for (int i = 0; i < size; i++){
+		if (i != size - 1){
+			drawLine(vertexArray[i], vertexArray[i+1]);
+		}
+		else {
+			drawLine(vertexArray[i], vertexArray[0]);
+		}
+
+	}
+}
+
+Vector2D vertTriangle[3] = {
+	{10, 10},
+	{41, 22},
+	{24, 30}
+};
+
 int main(){
 	initMatrix();
 
-	drawLine({10, 10}, {20, 40});
+	drawVertexArray(vertTriangle, 3);
 	
 	printMatrix();
 	
