@@ -1,10 +1,19 @@
+#define _USE_MATH_DEFINES
+
 #include <iostream>
+#include <cmath>
 
 #define WIDTH 200
 #define HEIGHT 80
 
 #define MAX_X WIDTH - 1
 #define MAX_Y HEIGHT - 1
+
+bool matrix[HEIGHT][WIDTH];
+
+double degToRad(double degrees){
+	return degrees * M_PI / 180;
+}
 
 class Vector2D{
 	public:
@@ -15,6 +24,16 @@ class Vector2D{
 		this->x = x;
 		this->y = y; 	
 	}
+
+	Vector2D rotate(Vector2D origin, double degrees){
+		Vector2D originatedVector = *this - origin;
+		double radians = degToRad(degrees);
+		double xPrime = originatedVector.x * std::cos(radians) - originatedVector.y * std::sin(radians);
+		double yPrime = originatedVector.x * std::sin(radians) + originatedVector.y * std::cos(radians);
+		Vector2D primeVector = Vector2D(xPrime,yPrime) + origin;
+		return primeVector;
+	}
+	
 	Vector2D operator+(Vector2D &add){
 		return Vector2D(this->x + add.x, this->y + add.y);
 	}
@@ -28,8 +47,6 @@ class Vector2D{
 		return Vector2D(this->x * multiplier, this->y * multiplier);
 	}
 };
-
-bool matrix[HEIGHT][WIDTH];
 
 void initMatrix(){
 	for (int f = 0; f < HEIGHT; f++){ // Filas
@@ -80,17 +97,17 @@ void drawVertexArray(Vector2D vertexArray[], int size){
 }
 
 Vector2D vertTriangle[3] = {
-	{10, 10},
-	{41, 22},
-	{24, 30}
+	{20, 20},
+	{51, 32},
+	{34, 40}
 };
 
 int main(){
 	initMatrix();
-
+	for (int i = 0; i < 3; i++){
+		vertTriangle[i] = vertTriangle[i].rotate({24, 21}, 90);
+	}
 	drawVertexArray(vertTriangle, 3);
-	
 	printMatrix();
-	
 	return 0;
 }
